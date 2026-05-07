@@ -1,0 +1,16 @@
+build/
+backups/
+*.vpk
+*.self
+*.velf
+*.zip
+*.7z
+*.PBP
+*.bak
+*.bak*
+*.current_before_bisect_*
+session_log_*.txt
+tools/downloads/
+tools/vitasdk/
+tools/ninja/
+upstream/

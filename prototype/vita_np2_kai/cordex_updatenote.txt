@@ -1,0 +1,24 @@
+cordex_updatenote - vita-np2-kai-sysport-v7
+
+Date: 2026-05-06
+
+Changes:
+- Backed up edited files before modification:
+  - backups/vita_np2_kai_sysport_v7_20260506_212811/
+- Modified prototype/vita_np2_kai/io/sysport.c:
+  - Added the NP2kai sysport_o37 IRQ4 behavior:
+    - if bit 0x04 is touched and rs232c.result & 2 is true, call pic_setirq(4).
+- Modified prototype/vita_np2_kai/psp/np2.c:
+  - Updated boot marker to vita-np2-kai-sysport-v7.
+
+Build:
+- Command: cmake --build build/vita_np2_kai -j 4
+- Result: success
+- Output VPK: build/vita_np2_kai/vita_np2_kai.vpk
+- Copied VPK: F:/vita_np2_kai.vpk
+- Backup VPK: backups/vita_np2_kai_sysport_v7_20260506_212833.vpk
+- SHA256: F3F10EA7CF9CBB7F58D518A1F983305B2881449448A8809B8DAA34AA86C7A97E
+
+Test focus:
+- Retest Animahjong post-mahjong fadeout.
+- If it still stalls, compare iolog recent and pic/art fields against v6.

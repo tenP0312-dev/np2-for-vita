@@ -1,0 +1,38 @@
+2026-05-06 Codex update note
+
+Work performed
+- Read the new v4 bootlog from F:/data/np2vita/bootlog.txt.
+- Confirmed v4 I/O logging works: iolog pos reached 17,725,681 in the latest run.
+- The Animahjong fadeout stall is now visible as an OPNA/PIC loop rather than an unknown freeze.
+
+What the log showed
+- The game/emulator keeps executing while drawing stops.
+- The stop loop repeatedly uses:
+  - 0188/018a: PC-9801-86 OPNA timer/status
+  - a468: PCM86 status
+  - 0000/0008/000a: PIC command/status
+  - 0037/005f: system/artic timing related ports
+- Recent sequence includes addr 0x27 then data 0x3f, which clears FM Timer-A/B status while keeping timers enabled.
+- PSP-derived fmtimer.c only reset PIC IRQ when both timers were disabled. NP2kai resets the PIC IRQ also when timer status bits are cleared.
+
+Changed files
+- prototype/vita_np2_kai/sound/fmtimer.c
+  - In fmtimer_setreg(0x27), pic_resetirq(fmtimer.irq) now runs when value clears Timer-A/B status bits via 0x10/0x20, as long as PCM86 does not still have irqflag set.
+- prototype/vita_np2_kai/psp/np2.c
+  - Build id changed to main: build vita-np2-kai-fmtimer-v5 20260506.
+- prototype/vita_np2_kai/psp/scrnmng.c
+  - diagkai1 now includes fm=status/reg/timera/timerb/irq.
+
+Backups
+- backups/vita_np2_kai_fmtimer_v5_20260506_203858/
+- backups/vita_np2_kai_fmtimer_v5_20260506_204020.vpk
+
+Build and deployment
+- Build succeeded with: cmake --build build/vita_np2_kai -j 4
+- Deployed to: F:/vita_np2_kai.vpk
+- SHA256: 866E9D879981C20B8521050626712AB09BE8EE767CA14A2FB69B5EF016965C45
+
+Next check
+- Run Animahjong through the same fadeout/animation path.
+- If it no longer stalls, this was probably a stale OPNA/PIC IRQ issue.
+- If it still stalls, send bootlog and inspect first redraw watchdog lines, especially fm=, pic=, and iolog recent.

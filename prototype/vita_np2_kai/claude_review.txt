@@ -1,0 +1,23 @@
+Implementation review request - vita-np2-kai-sysport-v7
+
+Implemented files:
+- prototype/vita_np2_kai/io/sysport.c
+- prototype/vita_np2_kai/psp/np2.c
+
+Summary:
+- Ported the small NP2kai sysport_o37 behavior missing from the current Vita Kai tree.
+- When port 0x0037 changes bit 0x04, rs232c.send is still set as before, and now pic_setirq(4) is raised if rs232c.result & 2.
+- This targets the Animahjong stall loop observed at PC 1642:1138/113a/113e/1140/1144, which repeatedly outputs to 0x0037, 0x005f, and PIC EOI 0x0000.
+- Updated boot marker to "main: build vita-np2-kai-sysport-v7 20260506".
+
+Build / package:
+- Build succeeded with the existing warning set.
+- Output VPK: build/vita_np2_kai/vita_np2_kai.vpk
+- Copied to: F:/vita_np2_kai.vpk
+- Backup VPK: backups/vita_np2_kai_sysport_v7_20260506_212833.vpk
+- SHA256: F3F10EA7CF9CBB7F58D518A1F983305B2881449448A8809B8DAA34AA86C7A97E
+
+Notes / concerns:
+- v6 showed ARTIC reads remained zero during the stall, so the issue is not ARTIC counter polling.
+- v7 keeps the v6 ARTIC diagnostics/experiment in place for comparison.
+- If v7 still stalls, inspect whether pic master IRR shows IRQ4 bit changes and whether the 0x0037 loop still repeats unchanged.

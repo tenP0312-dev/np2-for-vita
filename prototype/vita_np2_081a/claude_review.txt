@@ -1,0 +1,18 @@
+﻿Implementation review request - animajan-redraw-v15
+
+Implemented file:
+- prototype/vita_np2_081a/psp/np2.c
+
+Summary:
+- Added a Vita-side redraw watchdog after the v14 diagnostics showed CPU/event progression continues while drawcount and output hash stop.
+- The Vita main loop now tracks drawcount. If drawcount does not change for 600 iterations outside menu, it logs "main: redraw watchdog" and calls scrndraw_redraw().
+- Updated boot marker to "main: build animajan-redraw-v15 20260506".
+- Rebuilt with clean-first and copied VPK to F:\vita_np2_081a.vpk.
+
+Expected interpretation:
+- If Animajan resumes or advances after watchdog logs, the issue is likely a missed dirty/update path and this can be refined into a cleaner redraw policy.
+- If watchdog logs but the visual freeze remains and hash remains unchanged, the guest is probably not changing VRAM/output at all after the fadeout.
+
+Notes / concerns:
+- This is a targeted diagnostic/rescue patch, not yet a final architecture change.
+- The watchdog is limited to outside-menu operation and only fires after drawcount stalls.

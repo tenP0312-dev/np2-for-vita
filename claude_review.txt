@@ -1,0 +1,31 @@
+2026-05-06 Claude review request
+
+Implemented files
+- prototype/vita_np2_kai/sound/fmtimer.c
+- prototype/vita_np2_kai/psp/np2.c
+- prototype/vita_np2_kai/psp/scrnmng.c
+
+Summary
+- Analyzed v4 bootlog from Animahjong fadeout stall.
+- v4 confirmed that active I/O history is captured.
+- Stall loop repeatedly touches PC-9801-86 FM timer/PIC paths:
+  - 0188/018a: OPNA timer/status register access
+  - a468: PCM86 status
+  - 0000/0008/000a: PIC command/status
+  - 0037/005f: system/artic timing ports
+- Port sequence includes repeated OPNA timer control writes such as addr 0x27 and data 0x3f.
+- Updated fmtimer_setreg() to clear the pending PIC IRQ when software clears Timer-A/B status bits via 0x10/0x20, matching the relevant NP2kai opntimer behavior more closely.
+- Preserves PCM86 pending IRQ by skipping pic_resetirq() while pcm86.irqflag is set.
+- Updated build id to: main: build vita-np2-kai-fmtimer-v5 20260506
+- Added fm= fields to diagkai1 output:
+  - status/reg/timera/timerb/irq
+
+Verification
+- cmake --build build/vita_np2_kai -j 4 succeeded.
+- Copied VPK to F:/vita_np2_kai.vpk.
+- Backup VPK: backups/vita_np2_kai_fmtimer_v5_20260506_204020.vpk
+- SHA256: 866E9D879981C20B8521050626712AB09BE8EE767CA14A2FB69B5EF016965C45
+
+Concerns
+- This is an experimental behavior fix, not only diagnostics.
+- If Animahjong still stalls, compare fm= and pic= fields at the first redraw watchdog.

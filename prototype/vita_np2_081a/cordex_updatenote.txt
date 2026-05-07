@@ -1,0 +1,18 @@
+﻿cordex_updatenote - animajan-redraw-v15
+
+Date: 2026-05-06
+
+Changes:
+- Backed up file before editing:
+  - backups\np2_before_animajan_redraw_v15_*.c
+- Added drawcount stall tracking in prototype/vita_np2_081a/psp/np2.c.
+- If drawcount is unchanged for 600 Vita main-loop iterations outside menu, the code logs "main: redraw watchdog" and calls scrndraw_redraw().
+- Updated boot marker to animajan-redraw-v15.
+- Built with clean-first.
+- Build succeeded and VPK hashes match between build output and F:\vita_np2_081a.vpk.
+
+Build:
+- Command: cmake --build build\vita_np2_081a --clean-first -j 4
+- Output VPK: build\vita_np2_081a\vita_np2_081a.vpk
+- Backup VPK: backups\vita_np2_081a_animajan_redraw_v15_20260506_140225.vpk
+- SHA256: AB786AC28B82504ECF92DD19C6167CE689026A41D1BED7F6DF5DF4E4776E7E34

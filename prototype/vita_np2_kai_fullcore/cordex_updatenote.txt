@@ -1,0 +1,107 @@
+﻿2026-05-07 Codex update v00.03
+
+変更ファイル
+- psp/np2.c / psp/np2.h
+  - vita_np2_frameskip を追加。初期値2。
+  - initload後に VITA_FRAMESKIP を0-10にclampして np2oscfg.DRAW_SKIP へ反映。
+  - メインループで VITA_FRAMESKIP=N の場合 N+1回に1回だけ scrnmng_gu_update() と VBlank待ちを実行。
+  - VITA_NP2_DIAG=0では diagkai1、redraw watchdog詳細、I/O recentログを実行しない。
+
+- psp/ini.c
+  - np2.cfg に VITA_FRAMESKIP を追加。既存 SkpFrame とは別に Vita 専用値として読む。
+
+- psp/scrnmng.c / vita_compat/psp_compat.h
+  - 640x400連続バッファを直接Vita framebufferへpresent。
+  - full_screenl/full_screenrへの毎フレーム分割コピーを廃止。
+
+- psp/psp/compiler.h
+  - VITA_NP2_DIAG デフォルト0を追加。
+
+- CMakeLists.txt
+  - VITA_VERSION を 00.03 に更新。
+
+ビルド結果
+- cmake --build build\vita_np2_kai_fullcore -j 4 成功。
+- 出力: build\vita_np2_kai_fullcore\vita_np2_kai_fullcore.vpk
+- バックアップ: backups\vita_np2_kai_fullcore_20260507_193352\vita_np2_kai_fullcore.vpk
+- F:\vita_np2_kai_fullcore.vpk にコピー済み。
+
+設定方法
+- ux0:data/np2vita/np2.cfg に VITA_FRAMESKIP=0-10 を追加/変更。
+- 0: 毎回present、2: 3ループに1回present、3: 4ループに1回present。
+
+2026-05-07 install fix
+- VPKインストールエラー対策としてタイトルIDを NP2F00001 から NP2F00003 へ変更。
+- アプリ名を NP2 Kai FullCore 003、VITA_VERSION を 01.00 に変更。
+- F:\vita_np2_kai_fullcore_003.vpk と F:\vita_np2_kai_fullcore.vpk にコピー済み。
+- SHA256(F:\vita_np2_kai_fullcore_003.vpk): 34D9700DCC28CA85B2A472051204419AF618C617311D56734E79EDA2A988B7F2
+
+2026-05-07 v00.03 rebuild after SD issue
+- SDカード認識問題後、v00.03変更を復元して再ビルド。
+- アプリ名: NP2 Kai FullCore 003 / TitleID: NP2F00003 / Version: 01.00
+- F:\vita_np2_kai_fullcore_003.vpk と F:\vita_np2_kai_fullcore.vpk にコピー済み。
+- バックアップ: backups\vita_np2_kai_fullcore_v003_rebuild_20260507_195003\vita_np2_kai_fullcore_003.vpk
+
+2026-05-07 v00.04 speed experiment
+- 起動時に ux0:data/np2vita/bootlog.txt をクリアする vita_np2_log_reset() を追加。
+- 起動ログに build vita-np2-kai-fullcore-play-v004 と frameskip/core_drawskip/audio_light を出す。
+- np2.cfg に VITA_DRAWSKIP_CORE と VITA_AUDIO_LIGHT を追加。
+- VITA_DRAWSKIP_CORE=true で内部 scrndraw_draw() 生成を VITA_FRAMESKIP 周期で間引く。
+- VITA_AUDIO_LIGHT=true で 11025Hz / latency>=750 に強制する軽量音声モードを追加。
+- CMake を -O3 -fomit-frame-pointer へ変更。
+- VPK: F:\vita_np2_kai_fullcore_004.vpk / F:\vita_np2_kai_fullcore.vpk
+- cfg現在値: VITA_FRAMESKIP=5, VITA_DRAWSKIP_CORE=true, VITA_AUDIO_LIGHT=false
+
+2026-05-07 v00.05 speed limit
+- VITA_SPEED_LIMIT を np2.cfg に追加。
+- true の場合、VITA_FRAMESKIPでpresentを飛ばすフレームでも VBlank待ちを行い、エミュが実機速度を追い越すのを抑制。
+- false の場合、v00.04同様にスキップフレームでは待たずに次のpccore_execへ進む高速モード。
+- build名を vita-np2-kai-fullcore-play-v005 に更新。
+- アプリ名/TitleID: NP2 Kai FullCore 005 / NP2F00005。
+- F:\vita_np2_kai_fullcore_005.vpk と F:\vita_np2_kai_fullcore.vpk にコピー済み。
+- cfg現在値: VITA_FRAMESKIP=5, VITA_DRAWSKIP_CORE=false, VITA_AUDIO_LIGHT=false, VITA_SPEED_LIMIT=true。
+
+2026-05-07 beta v006 stacked experiment
+- ベータ版としてアプリ名/TitleIDを NP2 Kai Beta 006 / NP2B00006 に変更し、既存安定版とは別アプリとしてインストールできるようにした。
+- build名を vita-np2-kai-fullcore-beta-v006 に更新。
+- VITA_SPEED_LIMIT を bool から 0-2 の数値設定に変更。
+  - 0: スキップフレームで待たない高速モード。MIDI/BGMが早送りになり得る。
+  - 1: スキップフレームでも毎回VBlank待ち。早送りは抑えるが重くなりやすい。
+  - 2: ベータ用の緩い制限。描画が進んでいない時だけ待ち、アニメ重負荷時は待ちを減らす。
+- F:\data\np2vita\np2.cfg のベータ初期値を VITA_FRAMESKIP=5 / VITA_DRAWSKIP_CORE=true / VITA_AUDIO_LIGHT=false / VITA_SPEED_LIMIT=2 に変更。
+- VPK: F:\vita_np2_kai_fullcore_beta_v006.vpk / F:\vita_np2_kai_fullcore_beta.vpk
+- バックアップ: backups\vita_np2_kai_fullcore_beta_v006_20260507_205311\vita_np2_kai_fullcore_beta_v006.vpk
+
+2026-05-07 beta v007 draw correctness fix
+- 麻雀の牌選択カーソルやポン/チー/カン選択など、小さい描画更新が落ちる問題への対策。
+- 原因候補の VITA_DRAWSKIP_CORE は、scrndraw_draw() の先頭で内部描画生成自体を return(0) しており、局所更新を消すリスクが高いため無効化。
+- vram/scrndraw.c から Vita向け内部描画生成スキップ処理を削除。
+- cfgはユーザー試験値の VITA_FRAMESKIP=3 / VITA_SPEED_LIMIT=0 を維持し、VITA_DRAWSKIP_CORE=false だけ反映。
+- アプリ名/TitleID: NP2 Kai Beta 007 / NP2B00007。
+- VPK: F:\vita_np2_kai_fullcore_beta_v007.vpk / F:\vita_np2_kai_fullcore_beta.vpk
+- SHA256(F:\vita_np2_kai_fullcore_beta_v007.vpk): 4C484E93BD066F368BDC575D9AEC9350C0D5FB10CD5E4E2B02F5E9DD18A7FD09
+
+2026-05-07 beta v008 smart core drawskip
+- v007で表示正確性は戻ったが、v006の快適さを部分的に戻すため VITA_DRAWSKIP_CORE をスマート化。
+- scrndraw_draw() で renewal_line のdirty行数を数え、96ライン未満の小さい更新は必ず描画する。
+- 96ライン以上の広い更新だけ VITA_FRAMESKIP 周期で内部描画生成を間引く。
+- 目的: 麻雀の牌カーソル/ポンチーカン選択などの局所更新を落とさず、セル画アニメのような大きな更新だけ軽くする。
+- アプリ名/TitleID: NP2 Kai Beta 008 / NP2B00008。
+- Fドライブが未接続だったため、VPKはローカルバックアップに作成。
+- VPK: backups\vita_np2_kai_fullcore_beta_v008_20260507_213608\vita_np2_kai_fullcore_beta_v008.vpk
+- SHA256: 425287A22EE61057CD82EA6ACEFD0B04B4B1D72ADEE2AD571AAB9B986792A2DD
+
+2026-05-07 RC009 release cleanup
+- アプリ名/TitleIDを NP2 Kai RC 009 / NP2R00009 に変更。
+- buildログ名を vita-np2-kai-fullcore-rc-v009 に変更。
+- 設定名を整理し、旧名互換を残したまま新名を追加。
+  - VITA_PRESENT_SKIP: VITA_FRAMESKIP の新推奨名。
+  - VITA_CORE_DRAWSKIP: VITA_DRAWSKIP_CORE の新推奨名。
+  - 両方ある場合は新名が後から読まれて優先される。
+- bootlogのcfg表示を frameskip から present_skip に変更。
+- README / Vita設定 / 既知問題 / リリースノートを追加更新。
+- GitHub準備として .gitignore に backups/ と VPK/SELF/VELF出力を追加。
+- リリース用フォルダを release\np2_kai_vita_rc009 に作成。
+- VPK: release\np2_kai_vita_rc009\vita_np2_kai_fullcore_rc009.vpk
+- SHA256: 117441FE0D46B9B19E1303EAE29B6384AA0ED9B1BF241685AD04C9DE584CAC68
+- Fドライブ未接続のため、F:\ へのコピーは未実施。
