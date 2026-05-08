@@ -364,6 +364,7 @@ static const INITBL iniitem[] = {
 	{"VITA_CORE_DRAWSKIP", INITYPE_BOOL,	&vita_np2_core_drawskip,	0},
 	{"VITA_AUDIO_LIGHT", INITYPE_BOOL,		&vita_np2_audio_light,	0},
 	{"VITA_SPEED_LIMIT", INITYPE_UINT8,		&vita_np2_speed_limit,	0},
+	{"VITA_TOUHOU_PRESET", INITYPE_BOOL,	&vita_np2_touhou_preset,	0},
 	{"F12_bind", INITYPE_UINT8,		&np2oscfg.F12KEY,		0},
 	{"e_resume", INITYPE_BOOL,		&np2oscfg.resume,		0},
 	{"jast_snd", INITYPE_BOOL,		&np2oscfg.jastsnd,		0},		// ver0.73

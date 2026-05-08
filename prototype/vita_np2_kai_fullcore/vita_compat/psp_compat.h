@@ -209,13 +209,13 @@ static inline int sceAudioChReserve(int channel, int sample_count, int format) {
   (void)format;
   /* Map PSP sceAudioChReserve to Vita BGM port, stereo S16, 44100 Hz */
   return sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM, sample_count, 44100,
-                             SCE_AUDIO_OUT_PARAM_FORMAT_S16_STEREO);
+                             SCE_AUDIO_OUT_MODE_STEREO);
 }
 
 static inline int sceAudioOutputPannedBlocking(int channel, int leftvol, int rightvol, const void *buf) {
   if (channel < 0) return -1;
   int vols[2] = {leftvol, rightvol};
-  sceAudioOutSetVolume(channel, SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH, vols);
+  sceAudioOutSetVolume(channel, (SceAudioOutChannelFlag)(SCE_AUDIO_VOLUME_FLAG_L_CH | SCE_AUDIO_VOLUME_FLAG_R_CH), vols);
   return sceAudioOutOutput(channel, buf);
 }
 

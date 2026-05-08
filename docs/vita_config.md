@@ -20,6 +20,13 @@ VITA_AUDIO_LIGHT=false
 VITA_SPEED_LIMIT=0
 ```
 
+Touhou timing experiment:
+
+```ini
+VITA_TOUHOU_PRESET=true
+VITA_AUDIO_LIGHT=false
+```
+
 ## Keys
 
 - `VITA_PRESENT_SKIP=0-10`
@@ -43,6 +50,11 @@ VITA_SPEED_LIMIT=0
   - Experimental audio load reduction.
   - Forces lower sampling rate and higher latency.
   - Keep `false` unless testing audio performance.
+
+- `VITA_TOUHOU_PRESET=true/false`
+  - Experimental RetroArch-like timing preset for PC-98 Touhou testing.
+  - Forces 2.4576 MHz base clock, at least 8x CPU, 44100 Hz audio, skipline, no present skip, core drawskip off, and strict speed wait.
+  - This is a compatibility/timing test, not the default fast preset.
 
 ## Compatibility Notes
 

@@ -60,6 +60,7 @@ UINT8 vita_np2_frameskip = 2;
 UINT8 vita_np2_core_drawskip = 0;
 UINT8 vita_np2_audio_light = 0;
 UINT8 vita_np2_speed_limit = 2;
+UINT8 vita_np2_touhou_preset = 0;
 #endif
 
 // ---- resume
@@ -293,7 +294,7 @@ int main(int argc, char *argv[])
 
     vita_np2_log_reset();
     vita_np2_log("main: enter");
-    vita_np2_log("main: build vita-np2-kai-fullcore-rc-v009 20260507");
+    vita_np2_log("main: build vita-np2-kai-fullcore-touhou-v010 20260508");
     set_datadir((argc > 0 && argv != NULL) ? argv[0] : NULL);
     vita_np2_log("main: datadir set");
     vita_np2_log(datadir);
@@ -331,11 +332,25 @@ int main(int argc, char *argv[])
     if (vita_np2_speed_limit > 2) {
         vita_np2_speed_limit = 2;
     }
+    if (vita_np2_touhou_preset) {
+        np2cfg.baseclock = 2457600;
+        if (np2cfg.multiple < 8) {
+            np2cfg.multiple = 8;
+        }
+        np2cfg.samplingrate = 44100;
+        np2cfg.delayms = 0;
+        np2cfg.skipline = 1;
+        np2cfg.skiplight = 255;
+        vita_np2_frameskip = 0;
+        vita_np2_core_drawskip = 0;
+        vita_np2_speed_limit = 1;
+        vita_np2_log("main: vita touhou preset on 56.4fps/44100hz");
+    }
     np2oscfg.DRAW_SKIP = vita_np2_frameskip;
     np2oscfg.NOWAIT = 1;
     {
-        char vita_cfg_log[128];
-        snprintf(vita_cfg_log, sizeof(vita_cfg_log), "main: vita cfg present_skip=%u core_drawskip=%u audio_light=%u speed_limit=%u", vita_np2_frameskip, vita_np2_core_drawskip, vita_np2_audio_light, vita_np2_speed_limit);
+        char vita_cfg_log[192];
+        snprintf(vita_cfg_log, sizeof(vita_cfg_log), "main: vita cfg present_skip=%u core_drawskip=%u audio_light=%u speed_limit=%u touhou=%u clk=%ldx%ld hz=%u latency=%u skiplight=%d", vita_np2_frameskip, vita_np2_core_drawskip, vita_np2_audio_light, vita_np2_speed_limit, vita_np2_touhou_preset, (long)np2cfg.baseclock, (long)np2cfg.multiple, np2cfg.samplingrate, np2cfg.delayms, np2cfg.skiplight);
         vita_np2_log(vita_cfg_log);
     }
     if (vita_np2_audio_light) {

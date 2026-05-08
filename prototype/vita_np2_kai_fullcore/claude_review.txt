@@ -58,6 +58,24 @@
 - 実装したファイル一覧
   - psp/np2.c
   - psp/ini.c
+
+追加対応: Touhou v010 RetroArch-like timing experiment
+- 実装したファイル一覧
+  - CMakeLists.txt
+  - psp/np2.c
+  - psp/np2.h
+  - psp/ini.c
+  - sound/fmgen/fmgen_headers.h
+  - vita_compat/psp_compat.h
+  - docs/vita_config.md
+  - docs/release_notes_touhou_v010.md
+- 実装内容の簡単なサマリー
+  - AZO234/NP2kai の libretro Vita 構成を参考に、FMGEN を有効化して sound/fmgen/*.cpp をビルド対象へ追加。
+  - VITA_TOUHOU_PRESET を追加し、東方PC-98確認用に 2.4576MHz base / clk_mult>=8 / 44100Hz / skipline / no present skip / strict wait へ寄せる設定を実装。
+  - C++ビルド対応として Vita PSP音声互換ラッパの型指定を修正し、fmgen_headers.h で min/max マクロと C++標準ヘッダの衝突を回避。
+- 不明点・懸念点
+  - FMGEN有効化でVPKサイズと音源処理負荷が増えているため、東方以外の既存ゲームはRC009と比較が必要。
+  - VITA_TOUHOU_PRESET は速度優先ではなくタイミング寄せなので、体感速度が下がる可能性あり。
   - CMakeLists.txt
   - F:\data\np2vita\np2.cfg
 - 実装内容

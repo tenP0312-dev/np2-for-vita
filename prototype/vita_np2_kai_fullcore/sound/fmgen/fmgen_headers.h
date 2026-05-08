@@ -7,8 +7,27 @@
 #define STRICT
 #define WIN32_LEAN_AND_MEAN
 
-#include <compiler.h>
+#ifdef __cplusplus
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+#endif
+
+#include <math.h>
 #include <cassert>
+#include <compiler.h>
+
+#ifdef __cplusplus
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+#endif
 
 #ifdef __cplusplus
 extern "C" {

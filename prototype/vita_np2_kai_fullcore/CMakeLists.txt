@@ -8,14 +8,15 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   endif()
 endif()
 
-project(vita_np2_kai_fullcore C ASM)
+project(vita_np2_kai_fullcore C CXX ASM)
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
-set(VITA_APP_NAME "NP2 Kai RC 009")
-set(VITA_TITLEID "NP2R00009")
+set(VITA_APP_NAME "NP2 Kai Touhou 010")
+set(VITA_TITLEID "NP2T00010")
 set(VITA_VERSION "01.00")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O3 -fomit-frame-pointer -Wno-unused-but-set-variable -Wno-unused-variable -Wno-parentheses -Wno-missing-braces -Wno-error=implicit-function-declaration -Wno-implicit-function-declaration -Wno-error=int-conversion -Wno-int-conversion -Wno-error=incompatible-pointer-types -Wno-incompatible-pointer-types")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3 -fomit-frame-pointer -fno-rtti -fno-exceptions -Wno-unused-but-set-variable -Wno-unused-variable -Wno-parentheses -Wno-missing-braces")
 
 set(NP2_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -59,6 +60,10 @@ file(GLOB NP2_SOURCES
   ${NP2_ROOT}/psp/psp/*.c
 )
 
+file(GLOB NP2_CXX_SOURCES
+  ${NP2_ROOT}/sound/fmgen/*.cpp
+)
+
 list(REMOVE_ITEM NP2_SOURCES
   ${NP2_ROOT}/debugsub.c
   ${NP2_ROOT}/generic/dipswbmp.c
@@ -79,6 +84,7 @@ list(REMOVE_ITEM NP2_SOURCES
 
 add_executable(${PROJECT_NAME}
   ${NP2_SOURCES}
+  ${NP2_CXX_SOURCES}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -99,6 +105,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${NP2_ROOT}/vram
   ${NP2_ROOT}/wab
   ${NP2_ROOT}/sound
+  ${NP2_ROOT}/sound/fmgen
   ${NP2_ROOT}/sound/mame
   ${NP2_ROOT}/sound/vermouth
   ${NP2_ROOT}/sound/getsnd
@@ -119,6 +126,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
   CPUCORE_IA32
   SOUND_CRITICAL
   SUPPORT_SOUND_SB16
+  SUPPORT_FMGEN
   SUPPORT_SMPU98
   SUPPORT_KAI_IMAGES
   USE_MAME

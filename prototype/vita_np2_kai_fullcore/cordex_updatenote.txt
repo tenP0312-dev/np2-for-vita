@@ -78,6 +78,16 @@
 - vram/scrndraw.c から Vita向け内部描画生成スキップ処理を削除。
 - cfgはユーザー試験値の VITA_FRAMESKIP=3 / VITA_SPEED_LIMIT=0 を維持し、VITA_DRAWSKIP_CORE=false だけ反映。
 - アプリ名/TitleID: NP2 Kai Beta 007 / NP2B00007。
+
+2026-05-08 Touhou v010 RetroArch-like timing experiment
+- AZO234/NP2kai libretro Vita targetを参考に、まず小さめの差分で東方PC-98向け実験版を作成。
+- CMakeをC++対応にし、SUPPORT_FMGENとsound/fmgen/*.cppを追加。
+- C++ビルドで通るよう、vita_compat/psp_compat.h のsceAudioOutOpenPort引数をSCE_AUDIO_OUT_MODE_STEREOへ修正し、音量flagをSceAudioOutChannelFlagへcast。
+- fmgen_headers.hでmath関数を使えるようにしつつ、compiler.hのmin/maxマクロがC++標準ヘッダへ干渉しないようundef。
+- np2.cfgキー VITA_TOUHOU_PRESET を追加。
+  - true時: clk_base=2457600 / clk_mult>=8 / SampleHz=44100 / Latencys=0 / skipline=true / skplight=255 / VITA_PRESENT_SKIP=0 / VITA_CORE_DRAWSKIP=false / VITA_SPEED_LIMIT=1。
+- アプリ名/TitleID: NP2 Kai Touhou 010 / NP2T00010。
+- ビルド成功: build\vita_np2_kai_fullcore\vita_np2_kai_fullcore.vpk。
 - VPK: F:\vita_np2_kai_fullcore_beta_v007.vpk / F:\vita_np2_kai_fullcore_beta.vpk
 - SHA256(F:\vita_np2_kai_fullcore_beta_v007.vpk): 4C484E93BD066F368BDC575D9AEC9350C0D5FB10CD5E4E2B02F5E9DD18A7FD09
 

@@ -37,3 +37,4 @@ extern UINT8 vita_np2_frameskip;
 extern UINT8 vita_np2_core_drawskip;
 extern UINT8 vita_np2_audio_light;
 extern UINT8 vita_np2_speed_limit;
+extern UINT8 vita_np2_touhou_preset;
