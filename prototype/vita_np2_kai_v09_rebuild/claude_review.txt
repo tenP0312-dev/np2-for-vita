@@ -1,0 +1,18 @@
+Implemented files:
+- CMakeLists.txt
+- psp/np2.c
+- cordex_updatenote.txt
+
+Summary:
+- Created prototype/vita_np2_kai_v09_rebuild as a separate rebuild workspace.
+- Reverted the copied v010 Touhou/FMGEN build shape toward the RC009 baseline by disabling the FMGEN C++ build path.
+- Updated app identity and boot marker so test logs can distinguish this build from RC009 release and v010/v037.
+
+Review notes:
+- This is intentionally a minimal first bisect step. I did not port v037 configuration keys here yet, because the goal is to confirm whether the RC009-lineage no-FMGEN binary regains the expected lightness.
+- VITA_TOUHOU_PRESET remains present in source/config compatibility, but FMGEN is no longer compiled in this rebuild.
+
+Build result:
+- VPK build succeeded.
+- Output copied locally to release/np2_kai_v09_rebuild_20260515/vita_np2_kai_v09_rebuild_nofmgen.vpk.
+- F: copy was not possible because the drive was not mounted.

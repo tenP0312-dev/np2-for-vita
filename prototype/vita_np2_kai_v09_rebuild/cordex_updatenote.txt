@@ -1,0 +1,23 @@
+2026-05-15 rc009 rebuild baseline
+
+Purpose:
+- Create a separate work tree from the light/stable RC009 lineage and use it as the new baseline.
+- First comparison target removes the v010 FMGEN/C++ build path, because RC009 was the last known light/stable release candidate.
+
+Changes from copied prototype/vita_np2_kai_fullcore:
+- App name: NP2 Kai RC009 Rebuild
+- Title ID: NP2R009RB
+- Build marker: vita-np2-kai-fullcore-rc009-rebuild-nofmgen 20260515
+- CMake project languages changed from C/CXX/ASM to C/ASM.
+- Removed sound/fmgen/*.cpp from the build.
+- Removed SUPPORT_FMGEN from compile definitions.
+- Left Vita display/menu/input/fullcore behavior intact for a clean baseline comparison.
+
+Next comparison plan:
+- If this rebuild is light like the original v09/RC009, the v010 FMGEN/C++ path was a major suspect.
+- If it is still heavy, compare against the packaged RC009 VPK and then bisect older fullcore backups v008 -> v009 -> v010.
+
+2026-05-15 build result:
+- Build succeeded and VPK was generated.
+- Local release copy: release/np2_kai_v09_rebuild_20260515/vita_np2_kai_v09_rebuild_nofmgen.vpk
+- Copy to F: failed because F: was not mounted.
