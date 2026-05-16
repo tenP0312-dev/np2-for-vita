@@ -1,0 +1,21 @@
+﻿# cordex_updatenote
+
+Implemented mainline v001 from the light v09 nofmgen rebuild.
+
+Changed files:
+- CMakeLists.txt
+- psp/np2.c
+- psp/np2.h
+- psp/ini.c
+
+Summary:
+- Renamed app/project to NP2 Kai Mainline 001 / NP2ML0001.
+- Changed boot marker to vita-np2-kai-mainline-v001 20260516.
+- Kept nofmgen/C-only build path to preserve the lighter v09 behavior.
+- Added config parsing for VITA_CPU_MULT, VITA_DRAW_SKIP, VITA_FORCE_NOWAIT, VITA_FORCE_SKIPLINE, VITA_FORCE_GDC, VITA_SOUND_MODE, VITA_SOUND_BOARD, VITA_USE_FMGEN, and VITA_UPD72020.
+- VITA_USE_FMGEN is accepted but ignored because this build intentionally does not compile FMGEN/C++.
+- Defaults remain conservative: no forced nowait, no forced GDC, skipline default on, existing present/layer/Japanese filename behavior retained.
+
+Build:
+- build_ninja/vita_np2_kai_mainline.vpk built successfully.
+- Release copy: release/np2_kai_mainline_v001_20260516/vita_np2_kai_mainline_v001.vpk

@@ -1,0 +1,18 @@
+﻿# claude_review
+
+Implemented files:
+- CMakeLists.txt
+- psp/np2.c
+- psp/np2.h
+- psp/ini.c
+
+Summary:
+- Created mainline v001 as a separate project folder based on the light v09 nofmgen rebuild.
+- Preserved v09 nofmgen build strategy and added only cfg-level lightweight controls from later native builds.
+- Japanese filenames, STOP recovery, overlay/layer display, centered/color-correct Vita presentation, and menu stability are inherited from the v09 rebuild baseline.
+- FMGEN is intentionally not compiled; VITA_USE_FMGEN is parsed but logged as ignored.
+
+Concerns:
+- This is not byte-identical to the packaged RC009 VPK; it is the v09 rebuild baseline plus cfg controls.
+- VITA_FORCE_GDC defaults off to avoid silently changing behavior; enable from cfg only when testing.
+- Build completed, but real Vita behavior still needs user validation.
