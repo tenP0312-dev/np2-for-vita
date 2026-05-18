@@ -1,0 +1,18 @@
+﻿# cordex_updatenote
+
+Implemented mainline v002 minimal.
+
+Changed files:
+- CMakeLists.txt
+- psp/np2.c
+
+Summary:
+- Copied the light v09 nofmgen rebuild into a separate mainline v002 folder.
+- Changed app/project identity to NP2 Kai Mainline 002 / NP2ML0002.
+- Changed boot marker to vita-np2-kai-mainline-v002-minimal 20260518.
+- Intentionally did not port the v001 expanded cfg controls, because the user observed v001 became heavier.
+- Kept only v09-era cfg controls and fixed behavior: present skip, core drawskip, audio_light, speed_limit, touhou preset, force nowait, force skipline, force GDC as in v09 rebuild.
+
+Build:
+- build_ninja/vita_np2_kai_mainline_v002.vpk built successfully.
+- Release copy: release/np2_kai_mainline_v002_minimal_20260518/vita_np2_kai_mainline_v002_minimal.vpk

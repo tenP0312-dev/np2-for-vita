@@ -1,0 +1,14 @@
+﻿# claude_review
+
+Implemented files:
+- CMakeLists.txt
+- psp/np2.c
+
+Summary:
+- Created mainline v002 minimal as a regression-safe build from the v09 nofmgen rebuild.
+- It keeps v09 lightweight behavior and avoids the v001 expanded configuration block.
+- Japanese filenames, STOP recovery, overlay/layer display, centered/color-correct Vita presentation, and menu stability are inherited from the v09 rebuild baseline.
+
+Concerns:
+- This version intentionally sacrifices expanded cfg flexibility to verify the user's observation that v001 became heavier.
+- Real Vita validation is needed to confirm whether speed returns to the v09/v002-feeling baseline.
