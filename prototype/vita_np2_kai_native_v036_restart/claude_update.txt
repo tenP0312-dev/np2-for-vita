@@ -1,0 +1,62 @@
+== NP2 Vita 移植 修正ログ ==
+日付: 2026-05-01
+
+## 修正1: メニュー遷移時のゲームモードフラッシュ解消
+
+ファイル: psp/scrnmng.c
+関数: scrnmng_entermenu()
+
+【問題】
+menubase_open() の呼び出し順序が以下になっていた:
+  1. menubase_close() → menuvram = NULL
+  2. scrnmng_entermenu() → 内部で scrndraw_redraw() → scrnmng_gu_update() → present(menuvram=NULL)  ← ゲームモードで1フレーム描画！
+  3. menuvram = hdl  ← ここで初めてmenuvramが設定される
+
+ログ証拠:
+  present: n=215 menu=1->0 mw=0 mh=0 alpha=0x0   ← filesel: create dialog 直後にゲームモードへ
+  present: n=216 menu=0->1 mw=480 mh=272 ...      ← 即メニュー復帰
+
+【修正内容】
+scrnmng_entermenu() 内の scrndraw_redraw() 呼び出しを VITA_NP2_PORT 時はスキップ。
+
+  変更前:
+      scrndraw_redraw();
+
+  変更後:
+      #if !defined(VITA_NP2_PORT)
+      scrndraw_redraw();
+      #endif
+
+【理由】
+Vitaはメインループ (np2.c) が毎フレーム scrnmng_gu_update() を呼んで描画するため、
+メニュー遷移時に即時 redraw する必要がない。
+menuvram が正しく設定された後のフレームで自然に描画される。
+
+
+## 修正2: モーダルダイアログ中の描画更新追加
+
+ファイル: embed/menubase/menubase.c
+関数: menubase_modalproc()
+
+【問題】
+Vitaのモーダルループが scrnmng_gu_update() を呼んでいなかった。
+ファイル選択ダイアログ等のモーダル中に画面が更新されない可能性があった。
+
+【修正内容】
+  変更前:
+      while(menuvram != NULL) {
+          taskmng_rol();
+          sceDisplayWaitVblankStart();
+      }
+
+  変更後:
+      while(menuvram != NULL) {
+          taskmng_rol();
+          scrnmng_gu_update();
+          sceDisplayWaitVblankStart();
+      }
+
+【理由】
+モーダル中も毎フレーム描画を行い、ダイアログの表示を安定させる。
+np2.c のメインループはモーダル中は実行されないため、
+このループ内で描画を担う必要がある。

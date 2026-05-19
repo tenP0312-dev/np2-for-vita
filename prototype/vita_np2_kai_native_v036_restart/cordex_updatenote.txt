@@ -1,0 +1,20 @@
+﻿# cordex_updatenote
+
+Created vita_np2_kai_native_v036_restart from the native tree and restored the v036-fastpack pre-cfg-tuning backup files.
+
+Restored from:
+- prototype/vita_np2_kai_native/backup_before_native_20260514_v037_cfg_tuning
+
+Overlay files:
+- CMakeLists.txt -> project root
+- np2.c -> psp/np2.c
+- ini.c -> psp/ini.c
+- np2.h -> psp/np2.h
+
+Intent:
+- Restart from the last likely light native line before the heavier v037 cfg-tuning experiments.
+- Keep the build marker/app identity from the backup: vita-np2-kai-native-v036-fastpack / NP2 Kai Native 036FAST.
+- Avoid adding the expanded v001/mainline cfg block.
+
+Caveat:
+- The backup did not contain a full source snapshot. Unchanged files come from the current native tree copy.

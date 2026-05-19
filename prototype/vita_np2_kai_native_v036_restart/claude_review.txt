@@ -1,0 +1,16 @@
+﻿# claude_review
+
+Implemented files:
+- CMakeLists.txt
+- psp/np2.c
+- psp/ini.c
+- psp/np2.h
+- cordex_updatenote.txt
+
+Summary:
+- Created a separate restart folder based on the native tree.
+- Restored the v037_cfg_tuning backup files, whose internal marker identifies them as v036-fastpack.
+- This is intended to test the old lighter native line before the later cfg-tuning changes.
+
+Concern:
+- The available backup is partial, not a full project snapshot. CPU and other unchanged files are inherited from the copied native tree.
